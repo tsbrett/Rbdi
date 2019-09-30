@@ -18,8 +18,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // P_BDC
-double P_BDC(double x, double x0, double lambda, double mu, double t, double eps);
-RcppExport SEXP _Rbdi_P_BDC(SEXP xSEXP, SEXP x0SEXP, SEXP lambdaSEXP, SEXP muSEXP, SEXP tSEXP, SEXP epsSEXP) {
+double P_BDC(double x, double x0, double lambda, double mu, double t);
+RcppExport SEXP _Rbdi_P_BDC(SEXP xSEXP, SEXP x0SEXP, SEXP lambdaSEXP, SEXP muSEXP, SEXP tSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -28,14 +28,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
     Rcpp::traits::input_parameter< double >::type mu(muSEXP);
     Rcpp::traits::input_parameter< double >::type t(tSEXP);
-    Rcpp::traits::input_parameter< double >::type eps(epsSEXP);
-    rcpp_result_gen = Rcpp::wrap(P_BDC(x, x0, lambda, mu, t, eps));
+    rcpp_result_gen = Rcpp::wrap(P_BDC(x, x0, lambda, mu, t));
     return rcpp_result_gen;
 END_RCPP
 }
 // P_BDIC
-double P_BDIC(double x, double x0, double v, double lambda, double mu, double t, double eps);
-RcppExport SEXP _Rbdi_P_BDIC(SEXP xSEXP, SEXP x0SEXP, SEXP vSEXP, SEXP lambdaSEXP, SEXP muSEXP, SEXP tSEXP, SEXP epsSEXP) {
+double P_BDIC(double x, double x0, double v, double lambda, double mu, double t);
+RcppExport SEXP _Rbdi_P_BDIC(SEXP xSEXP, SEXP x0SEXP, SEXP vSEXP, SEXP lambdaSEXP, SEXP muSEXP, SEXP tSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -45,14 +44,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type lambda(lambdaSEXP);
     Rcpp::traits::input_parameter< double >::type mu(muSEXP);
     Rcpp::traits::input_parameter< double >::type t(tSEXP);
-    Rcpp::traits::input_parameter< double >::type eps(epsSEXP);
-    rcpp_result_gen = Rcpp::wrap(P_BDIC(x, x0, v, lambda, mu, t, eps));
+    rcpp_result_gen = Rcpp::wrap(P_BDIC(x, x0, v, lambda, mu, t));
     return rcpp_result_gen;
 END_RCPP
 }
 // C_bdi_ll_linear_R0
-double C_bdi_ll_linear_R0(NumericVector x, double delta_t, double eta, double gamm, double dR0, double R00, double eps);
-RcppExport SEXP _Rbdi_C_bdi_ll_linear_R0(SEXP xSEXP, SEXP delta_tSEXP, SEXP etaSEXP, SEXP gammSEXP, SEXP dR0SEXP, SEXP R00SEXP, SEXP epsSEXP) {
+double C_bdi_ll_linear_R0(NumericVector x, double delta_t, double eta, double gamm, double dR0, double R00);
+RcppExport SEXP _Rbdi_C_bdi_ll_linear_R0(SEXP xSEXP, SEXP delta_tSEXP, SEXP etaSEXP, SEXP gammSEXP, SEXP dR0SEXP, SEXP R00SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -62,17 +60,16 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type gamm(gammSEXP);
     Rcpp::traits::input_parameter< double >::type dR0(dR0SEXP);
     Rcpp::traits::input_parameter< double >::type R00(R00SEXP);
-    Rcpp::traits::input_parameter< double >::type eps(epsSEXP);
-    rcpp_result_gen = Rcpp::wrap(C_bdi_ll_linear_R0(x, delta_t, eta, gamm, dR0, R00, eps));
+    rcpp_result_gen = Rcpp::wrap(C_bdi_ll_linear_R0(x, delta_t, eta, gamm, dR0, R00));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_Rbdi_c_choose", (DL_FUNC) &_Rbdi_c_choose, 2},
-    {"_Rbdi_P_BDC", (DL_FUNC) &_Rbdi_P_BDC, 6},
-    {"_Rbdi_P_BDIC", (DL_FUNC) &_Rbdi_P_BDIC, 7},
-    {"_Rbdi_C_bdi_ll_linear_R0", (DL_FUNC) &_Rbdi_C_bdi_ll_linear_R0, 7},
+    {"_Rbdi_P_BDC", (DL_FUNC) &_Rbdi_P_BDC, 5},
+    {"_Rbdi_P_BDIC", (DL_FUNC) &_Rbdi_P_BDIC, 6},
+    {"_Rbdi_C_bdi_ll_linear_R0", (DL_FUNC) &_Rbdi_C_bdi_ll_linear_R0, 6},
     {NULL, NULL, 0}
 };
 

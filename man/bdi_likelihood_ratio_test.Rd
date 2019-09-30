@@ -2,62 +2,10 @@
 % Please edit documentation in R/bdi_likelihood_surface.R
 \name{bdi_likelihood_ratio_test}
 \alias{bdi_likelihood_ratio_test}
-\title{Likelihood estimation using the Birth-Death-Immigration (BDI) process}
+\title{MLE}
 \usage{
-bdi_likelihood_ratio_test(z, delta_t = 1, eta = 1, gamm = 1,
-  dR0 = 0, R00 = 0.9)
-}
-\arguments{
-\item{delta_t}{Time step of the data}
-
-\item{eta}{Numerical vector listing the set of immigration rates}
-
-\item{gamm}{Numerical vector listing the set of death (recovery) rates}
-
-\item{dR0}{Numerical vector listing the set of rates of change in
-reproductive number}
-
-\item{R00}{Numerical vector listing the set of initial reproductive number
-values}
-
-\item{x}{An equally spaced time series (numeric vector) of the number of
-individuals present.}
-}
-\value{
-A data frame that contains the log-likelihood for each unique
-parameter combinations.
+bdi_likelihood_ratio_test(likelihood_data, fp_e = 2, fp_s = 1)
 }
 \description{
-\code{bdi_likelihood} uses the analytical solution for the
-BDI process to calculate the log-likelihood of a time series. The BDI model
-used assumes that the immigration rate and death rate are fixed, and the
-birth-rate can vary approximately linearly with time (see below).
-}
-\details{
-The log-likelihood is calculated for each permutation of four input
-parameters. These parameters are: i) gamm, the death rate; ii) eta, the
-immigration rate; iii) R00, the initial value of the reproductive number
-\eqn{R_0}; iv) dR0, the rate of increase in \eqn{R_0}. The function assumes
-that the input data x are an equally-spaced time series with time step delta_t.
-
-The birth-rate is specified via the reproductive  number \eqn{R_0} (the ratio
-of birth rate to death rate) as is standard in epidemiological and
-ecological applications. It is modelled as a piecewise constant function,
-\deqn{
-R_0(t) = R00 +  dR0 \sum_{i=1}^{N} \delta \chi_{\delta i \le t},
-}
-where \eqn{N} is the number of data points \chi_{\delta i \le t} is an
-indicator function. For \eqn{dR0 \ll \delta} this approximates a linear
-variation in \eqn{R_0(t)}. Setting dR0 = 0 recovers the BDI model with
-constant parameters.
-
-The log-likelihood returned is the conditional log-likelihood,
-\deqn{\ell(\{x_i\}_{i=0}^N; \theta) = \sum_{i=1}^{N}\log P(x_i|x_{i-1};\theta)},
-where \eqn{\theta} are the model parameters. This is the dynamics may be
-non-stationary there is no general expression for \eqn{P(x_0; \theta)}, and
-therefore no expression for the unconditional log-likelihood that does not
-make additional assumptions on the dynamics.
-}
-\references{
-\url{https://en.wikipedia.org/wiki/Birth-death_process}
+MLE
 }

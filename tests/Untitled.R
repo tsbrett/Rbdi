@@ -2,21 +2,46 @@
 #useDynLib(Rbdi)
 #importFrom(Rcpp, sourceCpp)
 
-library(DOBAD)
 Rcpp::sourceCpp("./src/bdi.cpp")
 
 
 
-P_BDIC(x=40,x0=20,v=1, lambda= 0.9, mu=1, t=10, eps=10**13)
+ll_test = bdi_likelihood(z=c(40,20), delta_t = 0.1, eta = 1, gamm = 1,
+                         dR0 = c(0.0,0.01), R00 = 0.12*1)
 
-P_BDC(x=40,x0=20, lambda= 0.9, mu=1, t=10, eps=10**10)
+
+bdi_likelihood_ratio_test(ll_test)
+
+ts = read.csv("./tests/test.csv", row.names = 1)
+ts = unlist(ts, use.names=FALSE)
+
+test1 =bdi_likelihood(z=ts, delta_t = 6, eta = 1./7, gamm = 1./7,
+                      dR0 = seq(0.0,0.0004,0.0004/20), R00 = seq(0,1,1.0/20))
+
+
+test2 =bdi_lrt_moving_window(z=ts, delta_t = 6, eta = 1./7, gamm = 1./7,
+                       dR0 = seq(0.0,0.0004,0.0004/20), R00 = seq(0,1,1.0/20),
+                      window=length(ts))
+plot(test2$i, test2$cox_delta)
+
+ll2 = na.omit(ll_test)
+ll2[ll2$LogLike == stats$ML_e, ]
+
+
+
+P_BDIC(x=40,x0=20,v=1, lambda= 0.9, mu=1, t=10)
+
+P_BDC(x=40,x0=20, lambda= 0.9, mu=1, t=10)
 
 P_BDC(x=30,x0=20, lambda= 0.9, mu=1, t=10)
+
+P_BDC(x=30,x0=20, lambda=0.9, mu=1, t=10)
+
 
 norm = 0.0
 df = data.frame(i=integer(),p=double(),norm=double())
 for(i in seq(0,50,1)){
-  p = P_BDC(x=i,x0=20, lambda= 0.9, mu=1, t=10, eps=10**13)
+  p = P_BDC(x=i,x0=20, lambda= 0.9, mu=1, t=10)
   norm = norm + p
   df = rbind(df, list(i=i,p=p,norm=norm))
 }

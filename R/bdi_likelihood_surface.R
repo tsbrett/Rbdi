@@ -44,7 +44,7 @@
 #' parameter combinations.
 #' @export
 bdi_likelihood <- function(z, delta_t = 1, eta = 1, gamm = 1,
-                                        dR0 = 0.0, R00 = 0.9, eps=10**13){
+                                        dR0 = 0.0, R00 = 0.9){
 
   #library(foreach)
   #library(Rcpp)
@@ -70,12 +70,11 @@ bdi_likelihood <- function(z, delta_t = 1, eta = 1, gamm = 1,
 
   LogLikelihood <- foreach::foreach(i=seq(1, nrow(parameters)),
                            .options.multicore=list(set.seed=TRUE)) %do%
-    do.call(C_bdi_ll_linear_R0, append(list(z,delta_t = delta_t, eps=eps), parameters[i,]))
+    do.call(C_bdi_ll_linear_R0, append(list(z,delta_t = delta_t), parameters[i,]))
 
   tm <- parameters
   tm$LogLike <- unlist(LogLikelihood)
   tm$delta <- (1- tm$R00)/(tm$dR0*365)
-
   return(tm)
 }
 
@@ -85,7 +84,7 @@ bdi_likelihood <- function(z, delta_t = 1, eta = 1, gamm = 1,
 #' @export
 bdi_likelihood_ratio_test <- function(likelihood_data, fp_e=2, fp_s=1){
   # could use alternative optimisation methods to find mle
-  ll <- likelihood_data
+  ll <- na.omit(likelihood_data)
   # Just non-negative (dR0 >= 0)
   ll_e <- ll[ll$dR0>=0, ]
   ll_s <- ll[ll$dR0==0, ]
@@ -113,3 +112,28 @@ bdi_likelihood_ratio_test <- function(likelihood_data, fp_e=2, fp_s=1){
 
 
 
+#' Moving window
+#'
+#' @export
+bdi_lrt_moving_window <- function(z, delta_t = 1, eta = 1, gamm = 1,
+                                  dR0 = 0.0, R00 = 0.9, fp_e=2, fp_s=1,window=10){
+
+
+  get_window_stats <- function(i){
+    zt = z[max(i-window,0):(i)]
+    bdi_l = bdi_likelihood(zt, delta_t = delta_t, eta = eta, gamm = gamm,
+                           dR0 = dR0, R00 = R00)
+    bdi_lrt = bdi_likelihood_ratio_test(bdi_l)
+    bdi_lrt$i = i
+    return(data.frame(bdi_lrt))
+  }
+
+  N = length(z)
+  df = get_window_stats(1)
+  for(i in 2:N){
+    df = rbind(df, get_window_stats(i))
+  }
+  row.names(df) <- df$i
+
+  return(df)
+}
