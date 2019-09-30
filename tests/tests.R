@@ -22,6 +22,21 @@ test2 = bdi_lrt_moving_window(z=ts, delta_t = 6, eta = 1./7, gamm = 1./7,
                               R00 = seq(0,1,1.0/20), window=length(ts))
 
 plot(test2$i, test2$cox_delta)
+library(ggplot2)
+
+nba.m <- melt(test1, id.vars = c("dR0","R00"), measure.vars = "LogLike")
+
+nba.m$RelLogLike = nba.m$value - max(nba.m$value, na.rm=TRUE)
+nba.m$RelLogLike_cut = nba.m$RelLogLike
+
+
+p <- ggplot(nba.m, aes(dR0, R00))+
+  geom_tile(aes(fill = RelLogLike),colour = "white")
+
+
+\\\
+  scale_fill_gradient(low = "white", high = "steelblue")) +
+
 
 ll2 = na.omit(ll_test)
 ll2[ll2$LogLike == stats$ML_e, ]

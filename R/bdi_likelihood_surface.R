@@ -104,6 +104,7 @@ bdi_likelihood_ratio_test <- function(likelihood_data, fp_e=2, fp_s=1){
   cox_delta <- 2*(ll_max_e - ll_max_s)
   sum_stats <- list("ML_e" = ll_max_e, "ML_s" = ll_max_s, "fp_e" = fp_e,
                     "fp_s" = fp_s, "AIC_e" = AIC_e, "AIC_s" = AIC_s,
+                    "cox_threshold" = 2*(fp_e-fp_s),
                     "cox_delta" = cox_delta, "emerging" = is_emerging)
   return(sum_stats)
   #Tomorrow: return summary of stats, mle_e and mle_s as two data frames
