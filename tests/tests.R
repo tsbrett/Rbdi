@@ -4,8 +4,8 @@
 
 Rcpp::sourceCpp("./src/bdi.cpp")
 
-ll_test = bdi_likelihood(z=c(40,20), delta_t = 0.1, eta = 1, gamm = 1,
-                         dR0 = c(0.0,0.01), R00 = 0.12*1)
+ll_test = bdi_likelihood(z=c(40,20), delta_t = 0.1, eta = c(1), gamm = c(1,2),
+                         dR0 = c(0,0.01), R00 = c(0.1,0.2))
 
 
 bdi_likelihood_ratio_test(ll_test)

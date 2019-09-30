@@ -82,15 +82,32 @@ bdi_likelihood <- function(z, delta_t = 1, eta = 1, gamm = 1,
 #' MLE
 #'
 #' @export
-bdi_likelihood_ratio_test <- function(likelihood_data, fp_e=2, fp_s=1){
+bdi_likelihood_ratio_test <- function(likelihood_data){
+
+  # Calculate number of free parameters
+  get_fp <- function(vlist){
+    fp=0
+    for(v in vlist){
+      i = length(unique(ll_test[, v]))
+      if(i > 1){
+        fp = fp + 1
+      }
+    }
+    return(fp)
+   }
+
+  fp_s = get_fp(c("gamm","eta","R00"))
+  fp_e = fp_s + get_fp(c("dR0"))
+
+
+
   # could use alternative optimisation methods to find mle
   ll <- na.omit(likelihood_data)
   # Just non-negative (dR0 >= 0)
   ll_e <- ll[ll$dR0>=0, ]
   ll_s <- ll[ll$dR0==0, ]
   if (dim(ll_s)[1] ==0){
-    print("Log-likelihood not calculated for dR0=0")
-    break
+    stop("Log-likelihood not calculated for dR0=0")
   }
   ll_max_e <- max(ll$LogLike)
   ll_max_s <- max(ll_s$LogLike)
@@ -117,7 +134,7 @@ bdi_likelihood_ratio_test <- function(likelihood_data, fp_e=2, fp_s=1){
 #'
 #' @export
 bdi_lrt_moving_window <- function(z, delta_t = 1, eta = 1, gamm = 1,
-                                  dR0 = 0.0, R00 = 0.9, fp_e=2, fp_s=1,window=10){
+                                  dR0 = 0.0, R00 = 0.9, window=10){
 
 
   get_window_stats <- function(i){
