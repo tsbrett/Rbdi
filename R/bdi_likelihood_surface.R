@@ -88,7 +88,7 @@ bdi_likelihood_ratio_test <- function(likelihood_data){
   get_fp <- function(vlist){
     fp=0
     for(v in vlist){
-      i = length(unique(ll_test[, v]))
+      i = length(unique(likelihood_data[, v]))
       if(i > 1){
         fp = fp + 1
       }
